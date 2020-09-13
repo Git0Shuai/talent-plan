@@ -1,22 +1,25 @@
-pub struct KvStore;
+use std::collections::HashMap;
+
+pub struct KvStore {
+    data: HashMap<String, String>,
+}
 
 impl KvStore {
     pub fn new() -> KvStore {
-        KvStore {}
+        KvStore {
+            data: HashMap::new(),
+        }
     }
 
-    #[allow(unused_variables)]
     pub fn set(&mut self, key: String, value: String) {
-        unimplemented!("unimplemented")
+        self.data.insert(key, value);
     }
 
-    #[allow(unused_variables)]
     pub fn get(&self, key: String) -> Option<String> {
-        unimplemented!("unimplemented")
+        self.data.get(&key).map(|it| it.to_owned())
     }
 
-    #[allow(unused_variables)]
     pub fn remove(&mut self, key: String) {
-        unimplemented!("unimplemented")
+        self.data.remove(&key);
     }
 }
