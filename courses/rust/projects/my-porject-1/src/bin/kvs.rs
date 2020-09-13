@@ -3,12 +3,29 @@ use kvs::KvStore;
 
 fn main() {
     let opt = App::new("kvs")
-        .arg(Arg::with_name("version").short("V"))
-        .subcommand(SubCommand::with_name("get").arg(Arg::with_name("key")))
-        .subcommand(
-            SubCommand::with_name("set").args(&[Arg::with_name("key"), Arg::with_name("value")]),
+        .author(env!("CARGO_PKG_AUTHORS"))
+        .version(env!("CARGO_PKG_VERSION"))
+        .about(env!("CARGO_PKG_DESCRIPTION"))
+        .arg(
+            Arg::with_name("version")
+                .short("V")
+                .help("show version info"),
         )
-        .subcommand(SubCommand::with_name("rm").arg(Arg::with_name("key")))
+        .subcommand(
+            SubCommand::with_name("get")
+                .about("get value with key")
+                .arg(Arg::with_name("key")),
+        )
+        .subcommand(
+            SubCommand::with_name("set")
+                .about("set value with key")
+                .args(&[Arg::with_name("key"), Arg::with_name("value")]),
+        )
+        .subcommand(
+            SubCommand::with_name("rm")
+                .about("remove key")
+                .arg(Arg::with_name("key")),
+        )
         .get_matches();
 
     let mut kv_store = KvStore::new();
