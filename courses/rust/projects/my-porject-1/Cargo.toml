@@ -1,0 +1,16 @@
+[package]
+name = "kvs"
+version = "0.1.0"
+authors = ["he shuai <heshuai@9506@163.com>"]
+edition = "2018"
+description = "an in memory key-value store"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+
+[dev-dependencies]
+assert_cmd = "~1.0"
+predicates = "~1.0"
+
