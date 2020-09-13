@@ -1,25 +1,6 @@
-use std::collections::HashMap;
+#![deny(missing_docs)]
+//! an String to String Key-Value Stroe
 
-pub struct KvStore {
-    data: HashMap<String, String>,
-}
+mod kv;
 
-impl KvStore {
-    pub fn new() -> KvStore {
-        KvStore {
-            data: HashMap::new(),
-        }
-    }
-
-    pub fn set(&mut self, key: String, value: String) {
-        self.data.insert(key, value);
-    }
-
-    pub fn get(&self, key: String) -> Option<String> {
-        self.data.get(&key).map(|it| it.to_owned())
-    }
-
-    pub fn remove(&mut self, key: String) {
-        self.data.remove(&key);
-    }
-}
+pub use kv::KvStore; 
