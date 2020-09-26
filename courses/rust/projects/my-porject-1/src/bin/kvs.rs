@@ -1,10 +1,12 @@
+use anyhow::Result;
 use clap::{App, Arg, SubCommand};
-use kvs::KvStore;
+use kvs::{Error, KvStore};
+use std::process::exit;
 
 #[allow(unreachable_code)]
 #[allow(unused_variables)]
 #[allow(unused_mut)]
-fn main() {
+fn main() -> Result<()> {
     let opt = App::new("kvs")
         .author(env!("CARGO_PKG_AUTHORS"))
         .version(env!("CARGO_PKG_VERSION"))
@@ -31,24 +33,31 @@ fn main() {
         )
         .get_matches();
 
-    let mut kv_store = KvStore::new();
+    let mut kv_store = KvStore::open(".")?;
 
     match opt.subcommand() {
         ("get", Some(get_sub)) => {
-            unimplemented!("unimplemented");
             let key = get_sub.value_of("key").unwrap();
-            kv_store.get(key.to_owned());
+            if let Some(value) = kv_store.get(key.to_owned())? {
+                println!("{}", value);
+            } else {
+                println!("Key not found");
+            }
         }
         ("set", Some(set_sub)) => {
-            unimplemented!("unimplemented");
             let key = set_sub.value_of("key").unwrap();
             let value = set_sub.value_of("value").unwrap();
-            kv_store.set(key.to_owned(), value.to_owned());
+            kv_store.set(key.to_owned(), value.to_owned())?;
         }
         ("rm", Some(rm_sub)) => {
-            unimplemented!("unimplemented");
             let key = rm_sub.value_of("key").unwrap();
-            kv_store.remove(key.to_owned());
+            kv_store.remove(key.to_owned()).or_else(|err| {
+                if let Error::KeyNotFound(_) = err {
+                    println!("Key not found");
+                    exit(-1);
+                }
+                Err(err)
+            });
         }
         _ => {
             if opt.is_present("version") {
@@ -58,4 +67,6 @@ fn main() {
             }
         }
     };
+
+    Ok(())
 }
