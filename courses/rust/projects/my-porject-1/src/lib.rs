@@ -3,6 +3,7 @@
 
 mod error;
 mod kv;
+mod storages;
 
 pub use error::Error;
 pub use error::Result;

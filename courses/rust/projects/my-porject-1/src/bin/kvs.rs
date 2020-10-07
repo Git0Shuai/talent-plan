@@ -57,7 +57,7 @@ fn main() -> Result<()> {
                     exit(-1);
                 }
                 Err(err)
-            });
+            })?;
         }
         _ => {
             if opt.is_present("version") {
